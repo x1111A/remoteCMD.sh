@@ -11,6 +11,8 @@
 home=$HOME
 hostFile=$home/remoteCMD.sh/config/host.cfg
 configFile=$home/remoteCMD.sh/config/config.cfg
+logDir=$home/.remoteCMD
+logFile=$logDir/$(date +%F).log
 
 
 # Creating main function.
@@ -37,6 +39,23 @@ main(){
 		echo "End of help message."
 	}
 	
+	# Creatig function to check if log directory and current date log 
+	# file exists and if not, to create both of them.
+	
+	logCreate(){
+		if [ ! -d $logDir ];then
+			mkdir $logDir
+		fi
+		
+		if [ ! -f $logFile ];then
+			touch $logFile
+		fi
+		echo -e "$(date)\tRan by: $USER" >> $logFile
+		echo "*********************************************" >> $logFile
+	}
+	
+	logCreate
+	
 	
 	# Creating function which will execute command(s) via SSH specified in 
 	# commandFile variable on every host(s) according to hostFile variable.
@@ -50,8 +69,10 @@ main(){
 			printf "%*s\n" $(($(tput cols)/2)) "$command on host:"
 			printf "%*s\n" $(($(tput cols)/2)) "$host"
 			printf "%*s\n" $(tput cols) " " | tr " " "*"
-			ssh $host $command
-			echo
+			echo -e "Host: $host\tCommand: $command" >> $logFile
+			echo >> $logFile
+			ssh $host $command | tee -a $logFile
+			echo | tee -a $logFile
 		done
 		
 		}
