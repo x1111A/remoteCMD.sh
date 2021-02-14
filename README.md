@@ -9,5 +9,7 @@ Default directory is set to your `/home/` but you can change path variables insi
 
 Replace entries in `./config/host.cfg` with your own host(s) list.
 Commands stored inside `./config/commands` are written for CentOS/RHEL.Change that if necessary according to your remote host(s) OS.
+Program by default creates its hidden log directory in user's `$HOME` so make sure to change that to better fit your needs.
+Once the program is started, it will create log file according to the date it was run and will append to it all commands used on remote system(s) chronological by the time and user.
 
-To make the program executable use for an example `chmod 766 remoteCMD.sh` and to run it `./remoteCMD.sh -h` to view an available options first.
+To make the program executable use for example `chmod 766 remoteCMD.sh` and to run it `./remoteCMD.sh -h` to view an available options first.
